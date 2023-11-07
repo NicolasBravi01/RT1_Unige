@@ -1,9 +1,9 @@
-from _future_ import print_function
+#from _future_ import print_function
 
+from math import degrees, hypot, atan2
 import time
 from sr.robot import *
 
-from math import pi, sin, cos, degrees, hypot, atan2
 
 R = Robot()
 
@@ -71,7 +71,7 @@ def find_token(idMarkers):
 
 
 def isThereToken(idMarkers):
-    for token in R.see()
+    for token in R.see():
         if not (token.info.code in idMarkers):
             return True
     return False
@@ -109,7 +109,7 @@ def seeCenterArena():
     angle = degrees(atan2(rel_y, rel_x) - heading)
     
     #normalize
-    angle = (rot_arena + 180) % 360 - 180
+    angle = (angle + 180) % 360 - 180
 
     return dist, angle
 
@@ -124,9 +124,9 @@ def driveToArena():
         
         if dist < d_arena:
             drive(80, 0.035)
-        if a > a_arena:
+        if angle > a_arena:
             drive(60, 0.03)
-        if a < - a_arena:
+        if angle< - a_arena:
             drive(-60, 0.03)
         
         dist, angle = seeCenterArena()
@@ -139,9 +139,9 @@ def driveTo(dist, angle):
     if dist < d_th or abs(angle) < a_th:
         if dist < d_th:
             drive(80, 0.035)
-        if a > a_th:
+        if angle > a_th:
             drive(60, 0.03)
-        if a < - a_th:
+        if angle < - a_th:
             drive(-60, 0.03)
     
 
@@ -162,18 +162,20 @@ def main():
         
         if dist<d_th or abs(rot_y)<a_th:
             driveTo(dist, rot_y)
-        else
+        else:
             R.grab()
-            print(f'Marker {code} grabbed')
+            #print(f'Marker {code} grabbed')
+            #print('Marker grabbed', code)
             driveToArena()
             R.release()
             idMarkers.append(code)
-            print(f'Marker {code} released')
+            #print(f'Marker {code} released')
+            #print('Marker released', code)
             drive(-100, 0.5)
             turn(100, 0.2)
 
-    print(f'Job finished, {len(idMarkers)} moved in Arena')
-    print(idMarkers)
+    #print('Job finished, {len(idMarkers)} moved in Arena')
+    #print(idMarkers)
     
     
     
