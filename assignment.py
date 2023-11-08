@@ -1,8 +1,11 @@
 #from _future_ import print_function
 
-from math import degrees, hypot, atan2
 import time
 from sr.robot import *
+from math import degrees, hypot, atan2
+
+
+
 
 
 R = Robot()
@@ -13,9 +16,10 @@ a_th = 2.0
 d_th = 0.4
 """ float: Threshold for the control of the linear distance"""
 
-
-a_arena = 5  # Threshold for the control of the linear distance with the arena
-d_arena = 0.6  # Threshold for the control of the linear distance with the arena
+a_arena = 5  
+""" float: Threshold for the control of the linear distance with the arena"""
+d_arena = 0.6
+""" float: Threshold for the control of the linear distance with the arena"""
 
 
 def drive(speed, seconds):
@@ -50,11 +54,14 @@ def turn(speed, seconds):
 
 def find_token(idMarkers):
     """
-    Function to find the closest token
+    Function to find the closest token not in a specific list
+    
+    Args: idMarkers (list(int)): list of code of tokens to not consider
 
     Returns:
-	dist (float): distance of the closest token (-1 if no token is detected)
-	rot_y (float): angle between the robot and the token (-1 if no token is detected)
+    	code (int): code of the closest token (-1 if no token out of list is detected)
+	dist (float): distance of the closest token (-1 if no token out of list is detected)
+	rot_y (float): angle between the robot and the token (-1 if no token out of list is detected)
     """
     dist = 100
     for token in R.see():
@@ -71,15 +78,30 @@ def find_token(idMarkers):
 
 
 def isThereToken(idMarkers):
-    #for token in R.see():
-     #   if not (token.info.code in idMarkers):
-     #       return True
-    code,_,_ = find_token(idMarkers) 
-    return code>0
+    """
+    Function to check if there still is any token to move in Arena
+    
+    Args: idMarkers (list(int)): list of code of tokens to not consider
+
+    Returns:
+    	(bool): True is there still is any token to move in Arena, False if there is not.
+    """
+    for token in R.see():
+        if not (token.info.code in idMarkers):
+            return True
+            
+    return False
 
 
 def lookForToken(idMarkers):
+    """
+    Function to researh tokens if no one has been found
     
+    Args: idMarkers (list(int)): list of code of tokens to not consider
+
+    Returns:
+    	(bool): True is there still is any token to move in Arena, False if there is not.
+    """
     if isThereToken(idMarkers):
         return True
     
@@ -93,6 +115,13 @@ def lookForToken(idMarkers):
 
 
 def seeCenterArena():
+    """
+    Function to see how we should move to go in Arena
+    
+    Returns:
+    	dist (float): distance of the center of Arena
+	rot_y (float): angle between the robot and the center of Arena
+    """
     with R.lock:
         x, y = R.location
         heading = R.heading
@@ -110,14 +139,17 @@ def seeCenterArena():
 
 
 
-#TODO
+
 def driveToArena():
+    """
+    Function to drive the robot to the center of Arena
+    """
     dist, angle = seeCenterArena()
     
     while dist > d_arena or abs(angle) > a_arena:
         
         if dist > d_arena:
-            drive(80, 0.03)
+            drive(100, 0.03)
         if angle > a_arena:
             turn(60, 0.03)
         if angle< - a_arena:
@@ -129,11 +161,18 @@ def driveToArena():
 
 # TODO
 def driveTo(dist, angle):
+    """
+    Function to drive the robot to a specific point
+    
+    Args:
+    	dist (float): distance of the point
+	rot_y (float): angle between the robot and the point
+    """
     
     if dist > d_th or abs(angle) > a_th:
     
         if dist > d_th:
-            drive(80, 0.035)
+            drive(100, 0.03)
             
         if angle > a_th:
             turn(60, 0.03)
@@ -153,9 +192,10 @@ def driveTo(dist, angle):
 def main():
     
     idMarkers = []
-    print('Marker aoo')
+    print('--------------------------------------')
+    print('START')
+    print('--------------------------------------')
     
-    #drive(100, 0.3)
     
     while (lookForToken(idMarkers)):
     
@@ -165,17 +205,16 @@ def main():
             driveTo(dist, rot_y)
         else:
             R.grab()
-            #print(f'Marker {code} grabbed')
-            #print('Marker grabbed', code)
+            print('Marker ' + str(code) + ' grabbed')
             driveToArena()
             R.release()
             idMarkers.append(code)
-            #print(f'Marker {code} released')
-            #print('Marker released', code)
+            print('Marker '+ str(code) + ' released')
+            print()
             drive(-100,1)
-            turn(100, 0.3)
+            turn(80, 0.3)
 
-    print('Job finished, {len(idMarkers)} moved in Arena')
+    print('Job finished, ' + str(len(idMarkers)) + ' moved in Arena')
     print(idMarkers)
     
     
