@@ -71,10 +71,11 @@ def find_token(idMarkers):
 
 
 def isThereToken(idMarkers):
-    for token in R.see():
-        if not (token.info.code in idMarkers):
-            return True
-    return False
+    #for token in R.see():
+     #   if not (token.info.code in idMarkers):
+     #       return True
+    code,_,_ = find_token(idMarkers) 
+    return code>0
 
 
 def lookForToken(idMarkers):
@@ -82,18 +83,11 @@ def lookForToken(idMarkers):
     if isThereToken(idMarkers):
         return True
     
-    for i in range(7):
-        turn(50, 0.01)
-    
-    if isThereToken(idMarkers):
-        return True
+    for i in range(12):
+        turn(50, 0.15)
+        if isThereToken(idMarkers):
+            return True
 
-    for i in range(14):
-        turn(-50, 0.01)
-
-    if isThereToken(idMarkers):
-        return True
-    
     return False
 
 
@@ -120,14 +114,14 @@ def seeCenterArena():
 def driveToArena():
     dist, angle = seeCenterArena()
     
-    while dist < d_arena or abs(angle) < a_arena:
+    while dist > d_arena or abs(angle) > a_arena:
         
-        if dist < d_arena:
-            drive(80, 0.035)
+        if dist > d_arena:
+            drive(80, 0.03)
         if angle > a_arena:
-            drive(60, 0.03)
+            turn(60, 0.03)
         if angle< - a_arena:
-            drive(-60, 0.03)
+            turn(-60, 0.03)
         
         dist, angle = seeCenterArena()
 
@@ -136,13 +130,16 @@ def driveToArena():
 # TODO
 def driveTo(dist, angle):
     
-    if dist < d_th or abs(angle) < a_th:
-        if dist < d_th:
+    if dist > d_th or abs(angle) > a_th:
+    
+        if dist > d_th:
             drive(80, 0.035)
+            
         if angle > a_th:
-            drive(60, 0.03)
+            turn(60, 0.03)
+            
         if angle < - a_th:
-            drive(-60, 0.03)
+            turn(-60, 0.03)
     
 
 
@@ -156,11 +153,15 @@ def driveTo(dist, angle):
 def main():
     
     idMarkers = []
+    print('Marker aoo')
+    
+    #drive(100, 0.3)
     
     while (lookForToken(idMarkers)):
+    
         code, dist, rot_y = find_token(idMarkers)
         
-        if dist<d_th or abs(rot_y)<a_th:
+        if dist>d_th or abs(rot_y)>a_th:
             driveTo(dist, rot_y)
         else:
             R.grab()
@@ -171,12 +172,11 @@ def main():
             idMarkers.append(code)
             #print(f'Marker {code} released')
             #print('Marker released', code)
-            drive(-100, 0.5)
-            turn(100, 0.2)
+            drive(-100,1)
+            turn(100, 0.3)
 
-    #print('Job finished, {len(idMarkers)} moved in Arena')
-    #print(idMarkers)
-    
+    print('Job finished, {len(idMarkers)} moved in Arena')
+    print(idMarkers)
     
     
     
@@ -192,79 +192,3 @@ main()
 
 
 
-
-"""
-v = []
-dist_arena, rot_arena = seeCenterArena()  # look for the center of arena.
-
-while 1:
-
-    dist_arena = dist_arena + 0.5;
-
-    markers = R.see()
-    for m in markers:
-        v = v
-
-    dist, rot_y = find_token_color(v)  # we look for markers.
-
-    if dist == -1:
-        print("I don't see any token!!")
-        turn(45, 0.5)
-
-    elif dist < d_th:
-
-        print("Found it!")
-
-        grabbed = R.grab()  # if we are close to the token, we grab it.
-
-        v.append(m.info.code)  # put into the vector v the code of the marker grabbed.
-
-        print("Gotcha!")
-
-        while (d_arena < dist_arena or 0.4 < abs(rot_arena)) and grabbed is True:
-
-            dist_arena, rot_arena = seeCenterArena()
-
-            if rot_arena < -a_th:
-
-                turn(-10, 0.25)  # turn left if the robot can't see the center of arena
-
-            elif rot_arena > a_th:
-
-                turn(+10, 0.25)  # turn right if the robot can't see the center of arena
-
-            elif -a_th <= rot_arena <= a_th:  # if the robot is well aligned with the token, we go forward
-
-                drive(50, 0.5)
-
-            if d_arena > dist_arena:
-                grabbed = R.release()  # release the marker when the robot is in the center of arena
-                grabbed = False
-                print("Box released" + str(grabbed))
-
-                drive(-50, 1)
-
-                turn(-35, 1)
-
-
-    elif -a_th <= rot_y <= a_th:  # if the robot is well aligned with the token, we go forward
-        print("Ah, here we are!.")
-        drive(50, 0.5)
-
-    elif rot_y < -a_th:  # if the robot is not well aligned with the token, we move it on the left or on the right
-        print("Left a bit...")
-        turn(-5, 0.25)
-
-    elif rot_y > a_th:
-        print("Right a bit...")
-        turn(+5, 0.25)
-
-    box = R.see()  # control if there are any token in the arena
-
-    if not box:
-        turn(15, 0.5)
-        if not box:
-            turn(400, 1)
-            if not box:
-                exit()
-"""
