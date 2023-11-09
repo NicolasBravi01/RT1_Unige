@@ -4,7 +4,20 @@ import time
 from sr.robot import *
 from math import degrees, hypot, atan2
 
+"""
+Research Track 1, Assignment 1
 
+Autor: Nicolas Bravi
+
+Goal: move the tokens in the Arena
+
+Flow Chart:
+	1- search a token, if the robot can't see it, turn around 360 looking for it. If any token has not been found, exit()
+	2- go to the closest token and grab it
+	3- go into the Arena and release it
+	4- go back and turn right
+	5- restart from 1
+"""
 
 
 
@@ -18,6 +31,7 @@ d_th = 0.4
 
 a_arena = 5  
 """ float: Threshold for the control of the linear distance with the arena"""
+
 d_arena = 0.6
 """ float: Threshold for the control of the linear distance with the arena"""
 
@@ -79,12 +93,12 @@ def find_token(idMarkers):
 
 def isThereToken(idMarkers):
     """
-    Function to check if there still is any token to move in Arena
+    Function to check if there still is any token to move into the Arena
     
     Args: idMarkers (list(int)): list of code of tokens to not consider
 
     Returns:
-    	(bool): True is there still is any token to move in Arena, False if there is not.
+    	(bool): True is there still is any token to move into the Arena, False if there is not.
     """
     for token in R.see():
         if not (token.info.code in idMarkers):
@@ -100,7 +114,7 @@ def lookForToken(idMarkers):
     Args: idMarkers (list(int)): list of code of tokens to not consider
 
     Returns:
-    	(bool): True is there still is any token to move in Arena, False if there is not.
+    	(bool): True is there still is any token to move into the Arena, False if there is not.
     """
     if isThereToken(idMarkers):
         return True
@@ -116,7 +130,7 @@ def lookForToken(idMarkers):
 
 def seeCenterArena():
     """
-    Function to see how we should move to go in Arena
+    Function to see how we should move to go into the Arena
     
     Returns:
     	dist (float): distance of the center of Arena
@@ -159,7 +173,6 @@ def driveToArena():
 
 
 
-# TODO
 def driveTo(dist, angle):
     """
     Function to drive the robot to a specific point
@@ -210,12 +223,14 @@ def main():
             R.release()
             idMarkers.append(code)
             print('Marker '+ str(code) + ' released')
-            print()
+            print('')
             drive(-100,1)
             turn(80, 0.3)
 
-    print('Job finished, ' + str(len(idMarkers)) + ' moved in Arena')
+    print('Job finished, ' + str(len(idMarkers)) + ' tokens moved into Arena')
     print(idMarkers)
+    
+    
     
     
     
