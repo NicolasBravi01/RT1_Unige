@@ -145,8 +145,8 @@ Identifies the closest token that is not included in the passed list of IDs, ign
   - `idMarkers` (list of int): list of code of tokens to not consider.
 - **Returns**: 
   - code (int): code of the closest token (-1 if no token out of list is detected)
-	 - dist (float): distance of the closest token (-1 if no token out of list is detected)
-	 - rot_y (float): angle between the robot and the token (-1 if no token out of list is detected)
+  - dist (float): distance of the closest token (-1 if no token out of list is detected)
+  - rot_y (float): angle between the robot and the token (-1 if no token out of list is detected)
   
 
 ### `isThereToken(idMarkers)`
@@ -166,12 +166,13 @@ Executes a rotational search any tokens not in the specified list if none are in
 ### `seeCenterArena()`
 Calculates how the robot should move relative to the arena's center by determining the distance and angle from the robot's current position.
 
-- **Returns**: The distance (`dist`) to the center of the Arena and the angle (`rot_y`) between the robot and the center of the Arena.
+- **Returns**:
+  - dist (float): distance to the center of Arena
+  - rot_y (float): angle between the robot and the the center of Arena
 
 ### `driveToArena()`
 Navigates the robot towards the center of the Arena, continuously adjusting its path until it is within a defined proximity threshold.
 
-- **Behavior**: Calls `seeCenterArena()` to obtain navigation parameters and commands the robot to adjust its trajectory until the target position is reached.
 
 ### `driveTo(dist, angle)`
 Directs the robot to a specific point by controlling the linear and angular movements to meet the target distance and orientation, moving just a little bit.
@@ -179,7 +180,7 @@ Directs the robot to a specific point by controlling the linear and angular move
 - **Parameters**:
   - `dist` (float): The distance to the target point from the robot.
   - `angle` (float): The orientation angle to the target point from the robot's current heading.
-- **Behavior**: The robot moves and turns accordingly to reach the precise location, defined by the distance and angle parameters.
+- **Behavior**: TTTThe robot moves and turns accordingly to reach the precise location, defined by the distance and angle parameters.
 
 ### `main()`
 Serves as the entry point for the robot control program, orchestrating the token manipulation process through sequential function calls.
