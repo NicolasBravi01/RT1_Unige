@@ -20,25 +20,6 @@ On Ubuntu, this can be accomplished by:
 * Get the location. In my case this was `/usr/local/lib/python2.7/dist-packages`
 * Create symlink: `ln -s path/to/simulator/sr/robot /usr/local/lib/python2.7/dist-packages/sr/`
 
-## Exercise
------------------------------
-
-To run one or more scripts in the simulator, use `run.py`, passing it the file names. 
-
-I am proposing you three exercises, with an increasing level of difficulty.
-The instruction for the three exercises can be found inside the .py files (exercise1.py, exercise2.py, exercise3.py).
-
-When done, you can run the program with:
-
-```bash
-$ python run.py exercise1.py
-```
-
-You have also the solutions of the exercises (folder solutions)
-
-```bash
-$ python run.py solutions/exercise1_solution.py
-```
 
 Robot API
 ---------
@@ -103,3 +84,105 @@ for m in markers:
 ```
 
 [sr-api]: https://studentrobotics.org/docs/programming/sr/
+
+
+
+# RT1, Assignment 1
+First assignment of Research Track 1 course at UniGe Robotics Engineering.
+
+## Introduction
+This python script makes a simulated robot move to bring all the boxes called `token` in an arena. The robot grabs them, transports them to the center of the arena, and releases them. The process continues until all tokens have been moved.
+
+![Ticketmaster](ticketmaster/img/space.jpg)
+
+
+
+### Installing and Running
+
+1. Clone the repository to your local machine (or download):
+```bash
+git clone https://your-repository-link-here
+```
+
+2. Execute the program with:
+```bash
+$ python run.py assignment.py
+```
+
+
+## FlowChart
+This is a sintetic flowchart
+![Ticketmaster](ticketmaster/img/flowchart.jpg)
+
+
+
+# Function Descriptions
+
+Detailed descriptions of the functions within the robot control script are as follows:
+
+### `drive(speed, seconds)`
+Controls the robot's forward and backward movements by setting a consistent speed for both motors.
+
+- **Parameters**:
+  - `speed` (int): The power level sent to the motors to determine the robot's speed. Positive values move the robot forward, negative values move it backward.
+  - `seconds` (int): The time in seconds for which the robot continues moving at the set speed.
+
+ 
+### `turn(speed, seconds)`
+Controls the robot's right and left rotations by running motors in opposite directions.
+
+- **Parameters**:
+  - `speed` (int): The power level for the rotation. Positive values turn the robot to the right, and negative values to the left.
+  - `seconds` (int): The duration of the turn.
+
+
+### `find_token(idMarkers)`
+Identifies the closest token that is not included in the passed list of IDs, ignoring already those tokens.
+
+- **Parameters**:
+  - `idMarkers` (list of int): list of code of tokens to not consider.
+- **Returns**: 
+  - code (int): code of the closest token (-1 if no token out of list is detected)
+	 - dist (float): distance of the closest token (-1 if no token out of list is detected)
+	 - rot_y (float): angle between the robot and the token (-1 if no token out of list is detected)
+  
+
+### `isThereToken(idMarkers)`
+Checks the presence of any unprocessed tokens within the robot's field of vision.
+
+- **Parameters**:
+  - `idMarkers` (list of int): list of code of tokens to not consider.
+- **Returns**: A boolean value, `True` if there are tokens to be processed, `False` otherwise.
+
+### `lookForToken(idMarkers)`
+Executes a rotational search any tokens not in the specified list if none are initially visible.
+
+- **Parameters**:
+  - `idMarkers` (list of int): IDs of markers to ignore.
+- **Returns**: `True` if a token is eventually found before or during the rotation, `False` if no new tokens are detected after a complete 360-degree turn.
+
+### `seeCenterArena()`
+Calculates how the robot should move relative to the arena's center by determining the distance and angle from the robot's current position.
+
+- **Returns**: The distance (`dist`) to the center of the Arena and the angle (`rot_y`) between the robot and the center of the Arena.
+
+### `driveToArena()`
+Navigates the robot towards the center of the Arena, continuously adjusting its path until it is within a defined proximity threshold.
+
+- **Behavior**: Calls `seeCenterArena()` to obtain navigation parameters and commands the robot to adjust its trajectory until the target position is reached.
+
+### `driveTo(dist, angle)`
+Directs the robot to a specific point by controlling the linear and angular movements to meet the target distance and orientation, moving just a little bit.
+
+- **Parameters**:
+  - `dist` (float): The distance to the target point from the robot.
+  - `angle` (float): The orientation angle to the target point from the robot's current heading.
+- **Behavior**: The robot moves and turns accordingly to reach the precise location, defined by the distance and angle parameters.
+
+### `main()`
+Serves as the entry point for the robot control program, orchestrating the token manipulation process through sequential function calls.
+
+- **Behavior**: Maintains a list of processed token IDs, searches for new tokens, approaches and grabs them, navigates back to the arena's center to release them, and repeats this process until all tokens are processed.
+- **Output**: Console messages indicating progress, such as token capture and release events, and a final report on the number of tokens moved.
+
+This comprehensive function documentation should enable any developer or user to grasp the intricacies of the robot's operational procedures and the purpose behind each segment of code.
