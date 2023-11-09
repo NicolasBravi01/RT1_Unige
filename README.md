@@ -93,7 +93,9 @@ First assignment of Research Track 1 course at UniGe Robotics Engineering.
 ## Introduction
 This python script makes a simulated robot move to bring all the boxes called `token` in an arena. The robot grabs them, transports them to the center of the arena, and releases them. The process continues until all tokens have been moved.
 
-![Ticketmaster](ticketmaster/img/space.jpg)
+
+<img src="img/sim1.png" alt="sim1" width="500"/>
+
 
 
 
@@ -111,12 +113,12 @@ $ python run.py assignment.py
 
 
 ## FlowChart
-This is a sintetic flowchart
-![Ticketmaster](ticketmaster/img/flowchart.jpg)
+
+![FlowChart](img/flowchart.png)
 
 
 
-# Function Descriptions
+## Function Descriptions
 
 Detailed descriptions of the functions within the robot control script are as follows:
 
@@ -186,3 +188,6 @@ Serves as the entry point for the robot control program, orchestrating the token
 - **Output**: Console messages indicating progress, such as token capture and release events, and a final report on the number of tokens moved.
 
 This comprehensive function documentation should enable any developer or user to grasp the intricacies of the robot's operational procedures and the purpose behind each segment of code.
+
+<img src="img/sim2.png" alt="sim2" width="500"/>
+
