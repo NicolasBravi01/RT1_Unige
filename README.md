@@ -77,7 +77,10 @@ Executes a 360-degree rotational search for any token not in the specified list 
 - **Returns**: `True` if a token is eventually found before or during the rotation, `False` if no new tokens are detected after a complete 360-degree turn.
 
 ### `seeCenterArena()`
-Calculates how the robot should move relative to the Arena's center by determining the distance and angle from the robot's current position. To do it, we know that the cordinates of the center of Arena are (0,0).
+Calculates how the robot should move relative to the Arena's center by determining the distance and angle from the robot's current position. 
+
+- **Behavior**: We know that the cordinates of the center of Arena are (0,0). This function calculates the Euclidean distance between the origin (0,0) and a the robot's current cordinates. Subsequently, it calculates the angle to the center by determining the arctangent of the y-coordinate over the x-coordinate, then it normalize the angle.
+
 
 - **Returns**:
   - dist (float): distance to the center of Arena
