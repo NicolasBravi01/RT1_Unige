@@ -105,6 +105,6 @@ Serves as the entry point for the robot control program, using the described fun
 <img src="img/video.gif" alt="simulation" width="500"/>
 
 
-## AUTORS 👨‍💻
+## AUTOR
 
 * [Nicolas Bravi](https://github.com/NicolasBravi01)
