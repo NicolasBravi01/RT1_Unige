@@ -79,10 +79,10 @@ def find_token(idMarkers):
     """
     dist = 100
     for token in R.see():
-        code =  token.info.code
-        if token.dist < dist and not (code in idMarkers):  # conditions to verify if there are any token in the arena.
+        if token.dist < dist and (token.info.code not in idMarkers):  # conditions to verify if there are any token in the arena.
             dist = token.dist
-            rot_y = token.rot_y
+            rot_y = token.rot_y            
+            code =  token.info.code
             
     if dist == 100:
         return -1, -1, -1
@@ -101,7 +101,7 @@ def isThereToken(idMarkers):
     	(bool): True is there still is any token to move into the Arena, False if there is not.
     """
     for token in R.see():
-        if not (token.info.code in idMarkers):
+        if token.info.code not in idMarkers:
             return True
             
     return False
@@ -119,8 +119,8 @@ def lookForToken(idMarkers):
     if isThereToken(idMarkers):
         return True
     
-    for i in range(12):
-        turn(50, 0.15)
+    for i in range(25):
+        turn(50, 0.1)
         if isThereToken(idMarkers):
             return True
 
@@ -185,13 +185,13 @@ def driveTo(dist, angle):
     if dist > d_th or abs(angle) > a_th:
     
         if dist > d_th:
-            drive(100, 0.03)
+            drive(80, 0.03)
             
         if angle > a_th:
-            turn(60, 0.03)
+            turn(50, 0.03)
             
         if angle < - a_th:
-            turn(-60, 0.03)
+            turn(-50, 0.03)
     
 
 
@@ -214,6 +214,9 @@ def main():
     
         code, dist, rot_y = find_token(idMarkers)
         
+        if code == -1:            
+            continue
+        
         if dist>d_th or abs(rot_y)>a_th:
             driveTo(dist, rot_y)
         else:
@@ -225,7 +228,7 @@ def main():
             print('Marker '+ str(code) + ' released')
             print('')
             drive(-100,1)
-            turn(80, 0.3)
+            turn(90, 0.3)
 
     print('Job finished, ' + str(len(idMarkers)) + ' tokens moved into Arena')
     print(idMarkers)
@@ -237,8 +240,9 @@ def main():
     
     
     
-    
+start_time = time.time()    
 main()
+print("Time: ", time.time()-start_time, " seconds")
 
 
 
