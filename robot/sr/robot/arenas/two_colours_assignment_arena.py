@@ -5,6 +5,9 @@ from math import cos, pi, sin
 import pygame
 from pygame.rect import Rect
 
+import random
+import math
+
 from arena import ARENA_MARKINGS_COLOR, ARENA_MARKINGS_WIDTH, Arena
 from ..markers import Token
 from ..vision import MARKER_TOKEN_GOLD, MARKER_TOKEN_SILVER
@@ -55,14 +58,17 @@ class TwoColoursAssignmentArena(Arena):
 
         def place_token_circle(radius, number_offset=0, angle_offset=0.25 * pi,
                                rotate_silvers=0.0):
+            
             for i in range(TOKENS_PER_CIRCLE):
                 token_type = GoldToken
                 rotation_amount = 0
                 token = token_type(self, number_offset + i)
-                angle = angle_offset + (2 * pi / TOKENS_PER_CIRCLE) * i
+                radius = random.uniform(2.0, 2.2)
+                angle = random.uniform(0, 2*pi)
                 token.location = (cos(angle) * radius, sin(angle) * radius)
                 token.heading = rotation_amount
                 self.objects.append(token)
+            
 
         place_token_circle(OUTER_CIRCLE_RADIUS, number_offset=TOKENS_PER_CIRCLE,
                            angle_offset=1.5 * pi, rotate_silvers=pi / 4)
